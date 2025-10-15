@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/property_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="8dp"
+    android:layout_marginTop="6dp">
+
+    <ImageView
+        android:id="@+id/propertyProfile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#FFFFFF"
+        android:scaleType="centerCrop"
+        android:src="@drawable/test_room"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/propertyTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="일반원룸"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/propertyProfile"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/propertyBody1"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="월세300/38 원룸20/20m², 중/4층, 남동향"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@+id/propertyTitle"
+        app:layout_constraintLeft_toRightOf="@+id/propertyProfile"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/propertyBody2"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="깔끔병점역 도보5분이내 적극 추천!"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@+id/propertyBody1"
+        app:layout_constraintLeft_toRightOf="@+id/propertyProfile"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="10dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

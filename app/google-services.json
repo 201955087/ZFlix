@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "230870390600",
+    "project_id": "zflix-e7952",
+    "storage_bucket": "zflix-e7952.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230870390600:android:9cc6bbe8d43d4ec449457d",
+        "android_client_info": {
+          "package_name": "com.kyl.zflix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkXYMMsZXU0byXY4WnGUgAQx3SdoToJZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

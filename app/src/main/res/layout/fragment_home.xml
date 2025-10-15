@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".ui.HomeFragment">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="50dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/Zleft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Z"
+                    android:textColor="#ff5722"
+                    android:textSize="38sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="flix"
+                    android:textColor="#212121"
+                    android:textSize="38sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_house_detached"
+                    android:layout_width="0dp"
+                    android:layout_height="180dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_button"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="#616161"
+                    android:drawableTop="@drawable/baseline_home_24"
+                    android:paddingTop="32dp"
+                    android:paddingBottom="32dp"
+                    android:text="단독/다가구"
+                    android:textColor="#616161"
+                    android:textSize="18sp"
+                    app:backgroundTint="#F5F5F5" />
+
+                <Button
+                    android:id="@+id/btn_villa"
+                    android:layout_width="0dp"
+                    android:layout_height="180dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_button"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="#616161"
+                    android:drawableTop="@drawable/baseline_home_24"
+                    android:paddingTop="32dp"
+                    android:paddingBottom="32dp"
+                    android:text="빌라"
+                    android:textColor="#616161"
+                    android:textSize="18sp"
+                    app:backgroundTint="#F5F5F5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_apartment"
+                    android:layout_width="0dp"
+                    android:layout_height="180dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_button"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="#616161"
+                    android:drawableTop="@drawable/baseline_apartment_24"
+                    android:paddingTop="32dp"
+                    android:paddingBottom="32dp"
+                    android:text="아파트"
+                    android:textColor="#616161"
+                    android:textSize="18sp"
+                    app:backgroundTint="#F5F5F5" />
+
+                <Button
+                    android:id="@+id/btn_officetel"
+                    android:layout_width="0dp"
+                    android:layout_height="180dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_button"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="#616161"
+                    android:drawableTop="@drawable/baseline_home_24"
+                    android:paddingTop="32dp"
+                    android:paddingBottom="32dp"
+                    android:text="오피스텔"
+                    android:textColor="#616161"
+                    android:textSize="18sp"
+                    app:backgroundTint="#F5F5F5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_one_room"
+                    android:layout_width="0dp"
+                    android:layout_height="180dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_button"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="#616161"
+                    android:drawableTop="@drawable/baseline_home_24"
+                    android:paddingTop="32dp"
+                    android:paddingBottom="32dp"
+                    android:text="원룸"
+                    android:textColor="#616161"
+                    android:textSize="18sp"
+                    app:backgroundTint="#F5F5F5" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

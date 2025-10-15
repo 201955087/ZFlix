@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/roomImageViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="0dp">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:id="@+id/favoriteIcon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_star"
+                        android:contentDescription="즐겨찾기"
+                        android:padding="4dp"/>
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/priceDifference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/blue" />
+
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_marginTop="4dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="false" />
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="1"
+                android:padding="16dp">
+
+                <TableRow>
+                    <TextView android:text="매물번호" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/listingId" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="매물유형" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/propertyType" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="보증금/월세" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/depositMonthlyRent" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="공급/전용면적" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/area" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="매물특징" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/description" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="관리비" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/maintenanceFee" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="입주가능일" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/availableMoveInDate" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="방향" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/direction" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="사용승인일" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/approvalDate" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="방/욕실수" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/roomBathroom" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="해당층/총층" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/floorInfo" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="복층여부" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/isDuplex" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="불법건축물" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/illegalBuilding" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="주차가능여부" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/parkingAvailable" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="총주차대수" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/totalParkingSpaces" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="매물설명" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/propertyFeatures" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="내부시설" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/interiorFacilities" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="중개보수" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/brokerageFee" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="대출금액" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/loanAmount" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="중개사" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/brokerName" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView android:text="중개사 연락처" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
+                    <TextView android:id="@+id/brokerPhone" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                </TableRow>
+            </TableLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" android:layout_marginTop="16dp" android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/mapTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="지도"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/mapImageView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="매물 위치 지도"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:padding="12dp">
+
+        <Button
+            android:id="@+id/contactButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="중개사에게 문의하기"
+            android:backgroundTint="#FF5722"
+            android:textColor="#FFFFFF"/>
+    </RelativeLayout>
+</LinearLayout>
