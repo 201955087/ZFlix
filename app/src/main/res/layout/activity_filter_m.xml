@@ -190,30 +190,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="사용승인일 (최대 경과 연도)"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black_light"
-                    android:layout_marginBottom="12dp" />
-
-                <LinearLayout
-                    android:id="@+id/approval_date_button_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingStart="16dp"
                 android:paddingEnd="16dp">
 
                 <TextView
