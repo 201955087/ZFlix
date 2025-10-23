@@ -22,7 +22,7 @@
         <activity android:name=".ui.LoginActivity" />
         <activity android:name=".ui.RegisterActivity" />
         <activity android:name=".ui.FilterActivity" />
-
+        <activity android:name=".ui.FiltermActivity" />
 
         <activity
             android:name=".MainActivity"
