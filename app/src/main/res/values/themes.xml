@@ -1,8 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Base.Theme.ZFlix" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <!-- ✅ 여기 수정: 상태바 색을 검정으로 지정 -->
+        <item name="android:statusBarColor" tools:targetApi="l">#000000</item>
+
+        <!-- 나머지는 그대로 유지 -->
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/black</item>
+
+        <!-- 상태바 아이콘 색을 밝게 (검정 배경 위에 흰 아이콘) -->
+        <item name="android:windowLightStatusBar">false</item>
+
     </style>
 
     <style name="Theme.ZFlix" parent="Base.Theme.ZFlix" />
