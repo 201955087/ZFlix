@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.kyl.zflix.ui.FavoritePlacesFragment;
 import com.kyl.zflix.ui.FavoritesFragment;
 import com.kyl.zflix.ui.HomeFragment;
 import com.kyl.zflix.ui.MoreFragment;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.nav_home) {
                 selected = new HomeFragment();
             } else if (id == R.id.nav_favorites) {
-                selected = new FavoritesFragment();
+                selected = new FavoritePlacesFragment();
             } else if (id == R.id.nav_more) {
                 selected = new MoreFragment();
             }
