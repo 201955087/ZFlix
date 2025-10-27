@@ -11,7 +11,7 @@ public class PropertyRequest {
     @SerializedName("listing_id")
     private String listingId;
 
-    // --- 필터링 관련 필드 추가 ---
+    // --- 필터링 관련 필드 ---
     @SerializedName("district")
     private String district;
 
@@ -24,17 +24,26 @@ public class PropertyRequest {
     @SerializedName("deposit_max")
     private String depositMax;
 
-    @SerializedName("monthly_rent_min")
-    private String monthlyRentMin;
+    @SerializedName("monthly_min")
+    private Integer monthlyRentMin;
 
-    @SerializedName("monthly_rent_max")
-    private String monthlyRentMax;
+    @SerializedName("monthly_max")
+    private Integer monthlyRentMax;
 
-    @SerializedName("interior_facilities")
+    @SerializedName("net_min")
+    private String netAreaMin;
+
+    @SerializedName("net_max")
+    private String netAreaMax;
+
+    @SerializedName("interior_facilities_list")
     private List<String> interiorFacilities;
 
-    // --- 생성자 및 Getter/Setter 추가 ---
+    // 사용승인일 필드
+    @SerializedName("approval_age_group")
+    private String approvalAgeGroup;
 
+    // --- 생성자 ---
     public PropertyRequest(String type) {
         this.type = type;
     }
@@ -44,8 +53,10 @@ public class PropertyRequest {
         this.listingId = listingId;
     }
 
-    // 모든 필터 조건을 포함하는 생성자 추가
-    public PropertyRequest(String type, String district, String legalDong, String depositMin, String depositMax, String monthlyRentMin, String monthlyRentMax, List<String> interiorFacilities) {
+    public PropertyRequest(String type, String district, String legalDong,
+                           String depositMin, String depositMax, Integer monthlyRentMin,
+                           Integer monthlyRentMax, String netAreaMin, String netAreaMax,
+                           String approvalDateLimitYears, List<String> interiorFacilities) {
         this.type = type;
         this.district = district;
         this.legalDong = legalDong;
@@ -53,72 +64,44 @@ public class PropertyRequest {
         this.depositMax = depositMax;
         this.monthlyRentMin = monthlyRentMin;
         this.monthlyRentMax = monthlyRentMax;
+        this.netAreaMin = netAreaMin;
+        this.netAreaMax = netAreaMax;
+        this.approvalAgeGroup = approvalAgeGroup;
         this.interiorFacilities = interiorFacilities;
     }
 
-    // 기존 Getter/Setter 유지
-    public String getType() {
-        return type;
-    }
+    // --- Getter / Setter ---
+    public String getType() { return type; }
+    public String getListingId() { return listingId; }
 
-    public String getListingId() {
-        return listingId;
-    }
+    public String getDistrict() { return district; }
+    public void setDistrict(String district) { this.district = district; }
 
-    // 새로 추가된 필드의 Getter/Setter
-    public String getDistrict() {
-        return district;
-    }
+    public String getLegalDong() { return legalDong; }
+    public void setLegalDong(String legalDong) { this.legalDong = legalDong; }
 
-    public void setDistrict(String district) {
-        this.district = district;
-    }
+    public String getDepositMin() { return depositMin; }
+    public void setDepositMin(String depositMin) { this.depositMin = depositMin; }
 
-    public String getLegalDong() {
-        return legalDong;
-    }
+    public String getDepositMax() { return depositMax; }
+    public void setDepositMax(String depositMax) { this.depositMax = depositMax; }
 
-    public void setLegalDong(String legalDong) {
-        this.legalDong = legalDong;
-    }
+    public Integer getMonthlyRentMin() { return monthlyRentMin; }
+    public void setMonthlyRentMin(Integer monthlyRentMin) { this.monthlyRentMin = monthlyRentMin; }
 
-    public String getDepositMin() {
-        return depositMin;
-    }
+    public Integer getMonthlyRentMax() { return monthlyRentMax; }
+    public void setMonthlyRentMax(Integer monthlyRentMax) { this.monthlyRentMax = monthlyRentMax; }
 
-    public void setDepositMin(String depositMin) {
-        this.depositMin = depositMin;
-    }
+    public List<String> getInteriorFacilities() { return interiorFacilities; }
+    public void setInteriorFacilities(List<String> interiorFacilities) { this.interiorFacilities = interiorFacilities; }
 
-    public String getDepositMax() {
-        return depositMax;
-    }
+    public String getNetAreaMin() { return netAreaMin; }
+    public void setNetAreaMin(String netAreaMin) { this.netAreaMin = netAreaMin; }
 
-    public void setDepositMax(String depositMax) {
-        this.depositMax = depositMax;
-    }
+    public String getNetAreaMax() { return netAreaMax; }
+    public void setNetAreaMax(String netAreaMax) { this.netAreaMax = netAreaMax; }
 
-    public String getMonthlyRentMin() {
-        return monthlyRentMin;
-    }
-
-    public void setMonthlyRentMin(String monthlyRentMin) {
-        this.monthlyRentMin = monthlyRentMin;
-    }
-
-    public String getMonthlyRentMax() {
-        return monthlyRentMax;
-    }
-
-    public void setMonthlyRentMax(String monthlyRentMax) {
-        this.monthlyRentMax = monthlyRentMax;
-    }
-
-    public List<String> getInteriorFacilities() {
-        return interiorFacilities;
-    }
-
-    public void setInteriorFacilities(List<String> interiorFacilities) {
-        this.interiorFacilities = interiorFacilities;
-    }
+    public String getApprovalAgeGroup() { return approvalAgeGroup; }
+    public void setApprovalAgeGroup(String approvalAgeGroup) { this.approvalAgeGroup = approvalAgeGroup; }
 }
+
