@@ -57,12 +57,30 @@
                     android:textSize="18sp"
                     android:textColor="@color/blue" />
 
-                <TextView
-                    android:id="@+id/address"
-                    android:layout_marginTop="4dp"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:singleLine="false" />
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:singleLine="false" />
+
+                    <ImageView
+                        android:id="@+id/copyAddressIcon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ic_copy"
+                        android:contentDescription="주소 복사"
+                        android:padding="2dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"/>
+                </LinearLayout>
             </LinearLayout>
 
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" />
@@ -90,9 +108,48 @@
                     <TextView android:id="@+id/area" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
                 </TableRow>
                 <TableRow>
-                    <TextView android:text="매물특징" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
-                    <TextView android:id="@+id/description" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
+                    <TextView
+                        android:text="매물특징"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- 매물특징 본문 -->
+                        <TextView
+                            android:id="@+id/description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:ellipsize="end"
+
+                            android:scrollHorizontally="false"
+                            android:singleLine="false" />
+
+                        <!-- 더보기 버튼 -->
+                        <TextView
+                            android:id="@+id/toggleDescription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:text="더보기"
+                            android:textColor="@color/blue"
+                            android:textSize="14sp"
+                            android:paddingEnd="8dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:visibility="gone" />   <!-- 기본적으로 숨김 -->
+                    </LinearLayout>
                 </TableRow>
+
+
+
+
                 <TableRow>
                     <TextView android:text="관리비" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
                     <TextView android:id="@+id/maintenanceFee" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>

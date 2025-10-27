@@ -15,35 +15,42 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.kyl.zflix.adapter.ImagePagerAdapter;
 import com.kyl.zflix.model.PropertyItem;
-import com.kyl.zflix.model.PropertyListItem; // PropertyListItem import 추가
+import com.kyl.zflix.model.PropertyListItem;
 import com.kyl.zflix.model.PropertyRequest;
 import com.kyl.zflix.model.PropertySingleResponse;
 import com.kyl.zflix.network.ApiClient;
 import com.kyl.zflix.network.ApiService;
 import com.kyl.zflix.network.FirestoreManager;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.content.ClipboardManager;
+import android.content.ClipData;
+import android.content.Context;
+
 public class PropertyDetailsActivity extends AppCompatActivity {
 
     private ViewPager2 roomImageViewPager;
-    private TextView title, priceDifference, address, description;
+    private TextView title, priceDifference, address, description, toggleDescription; // toggleDescription 추가
     private Button contactButton;
     private ImageView mapImageView;
     private TextView mapTitleTextView;
 
+    private ImageView copyAddressIcon;
     // 즐겨찾기 아이콘
     private ImageView favoriteIcon;
 
     // XML에 추가된 TextView 변수들 선언
-    private TextView listingId, propertyType, depositMonthlyRent, area, maintenanceFee, availableMoveInDate, direction, approvalDate, roomBathroom, floorInfo, isDuplex, illegalBuilding, parkingAvailable, totalParkingSpaces, propertyFeatures, interiorFacilities, brokerageFee, loanAmount, brokerName, brokerPhone;
+    private TextView listingId, propertyType, depositMonthlyRent, area, maintenanceFee, availableMoveInDate,
+            direction, approvalDate, roomBathroom, floorInfo, isDuplex, illegalBuilding, parkingAvailable,
+            totalParkingSpaces, propertyFeatures, interiorFacilities, brokerageFee, loanAmount, brokerName, brokerPhone;
 
     private FirestoreManager firestoreManager; // 추가된 FirestoreManager 변수
 
@@ -66,7 +73,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
             // 필요에 따라 상세 API 호출
             fetchPropertyDetails(itemFromIntent.getListingId(), itemFromIntent.getPropertyType());
         } else {
-            // 기존 API 호출 로직은 유지하되, 만약 아이템이 null이면 기존의 listingId와 type을 사용
+            // 기존 API 호출 로직
             String listingIdFromIntent = getIntent().getStringExtra("listingId");
             String propertyTypeFromIntent = getIntent().getStringExtra("type");
 
@@ -85,12 +92,13 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         priceDifference = findViewById(R.id.priceDifference);
         address = findViewById(R.id.address);
         description = findViewById(R.id.description);
+        toggleDescription = findViewById(R.id.toggleDescription); // 추가
         contactButton = findViewById(R.id.contactButton);
         mapImageView = findViewById(R.id.mapImageView);
         mapTitleTextView = findViewById(R.id.mapTitleTextView);
 
         favoriteIcon = findViewById(R.id.favoriteIcon);
-
+        copyAddressIcon = findViewById(R.id.copyAddressIcon);
         listingId = findViewById(R.id.listingId);
         propertyType = findViewById(R.id.propertyType);
         depositMonthlyRent = findViewById(R.id.depositMonthlyRent);
@@ -113,14 +121,10 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         brokerPhone = findViewById(R.id.brokerPhone);
     }
 
-    // PropertyListItem 객체에서 데이터 바인딩하는 새로운 메서드 추가
     private void bindDataFromListItem(PropertyListItem item) {
-        // 이 메서드에서는 PropertyListItem이 제공하는 데이터만 바인딩
         depositMonthlyRent.setText(item.getDeposit() + " / " + item.getMonthlyRent());
         title.setText(item.getPropertyType());
-        // ... 필요한 다른 데이터 바인딩 ...
     }
-
 
     private void fetchPropertyDetails(String listingId, String type) {
         ApiService apiService = ApiClient.getApiService();
@@ -145,51 +149,35 @@ public class PropertyDetailsActivity extends AppCompatActivity {
                 break;
             default:
                 Toast.makeText(this, "지원하지 않는 매물 유형입니다.", Toast.LENGTH_SHORT).show();
-                Log.e("API_CALL", "Unsupported property type: " + type);
                 return;
         }
-
-        Log.d("API_CALL", "Requesting details for listingId: " + listingId + " with type: " + type);
 
         call.enqueue(new Callback<PropertySingleResponse>() {
             @Override
             public void onResponse(Call<PropertySingleResponse> call, Response<PropertySingleResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("API_RESPONSE", "Received successful response.");
-                    PropertySingleResponse fullResponse = response.body();
-                    List<PropertyItem> propertyItemList = fullResponse.getData();
+                    List<PropertyItem> propertyItemList = response.body().getData();
 
                     if (propertyItemList != null && !propertyItemList.isEmpty()) {
                         PropertyItem propertyItem = propertyItemList.get(0);
                         bindDataToViews(propertyItem);
                     } else {
-                        Log.w("API_WARNING", "Response successful, but data list is empty.");
                         Toast.makeText(PropertyDetailsActivity.this, "상세 정보를 찾을 수 없습니다.", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    String errorMessage = "Failed to load details. Code: " + response.code();
-                    try {
-                        if (response.errorBody() != null) {
-                            errorMessage += ", Error Body: " + response.errorBody().string();
-                        }
-                    } catch (IOException e) {
-                        Log.e("API_ERROR", "Error reading error body.", e);
-                    }
-                    Log.e("API_ERROR", errorMessage);
                     Toast.makeText(PropertyDetailsActivity.this, "상세 정보를 불러오는 데 실패했습니다.", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<PropertySingleResponse> call, Throwable t) {
-                Log.e("API_FAILURE", "API Call Failed: " + t.getMessage(), t);
                 Toast.makeText(PropertyDetailsActivity.this, "네트워크 오류: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void bindDataToViews(PropertyItem propertyItem) {
-        // 이미지 URL 리스트 생성
+        // 이미지 설정
         List<String> imageUrlsList = new ArrayList<>();
         String imageUrls = propertyItem.getImageUrl();
         if (imageUrls != null && !imageUrls.isEmpty()) {
@@ -204,10 +192,9 @@ public class PropertyDetailsActivity extends AppCompatActivity {
             roomImageViewPager.setVisibility(View.GONE);
         }
 
-        // map image
-        String mapImageUrl = propertyItem.getMapImageUrl();
-        if (mapImageUrl != null && !mapImageUrl.isEmpty()) {
-            Glide.with(this).load(mapImageUrl).into(mapImageView);
+        // 지도 이미지
+        if (propertyItem.getMapImageUrl() != null && !propertyItem.getMapImageUrl().isEmpty()) {
+            Glide.with(this).load(propertyItem.getMapImageUrl()).into(mapImageView);
             mapTitleTextView.setVisibility(View.VISIBLE);
             mapImageView.setVisibility(View.VISIBLE);
         } else {
@@ -215,21 +202,73 @@ public class PropertyDetailsActivity extends AppCompatActivity {
             mapImageView.setVisibility(View.GONE);
         }
 
-        // 텍스트 바인딩
+        // 주소
         title.setText(propertyItem.getPropertyType());
         priceDifference.setText("보증금 " + propertyItem.getDeposit() + " / 월세 " + propertyItem.getMonthlyRent());
-        String fullAddress = propertyItem.getCity() + " " + propertyItem.getDistrict() + " " + propertyItem.getLegalDong() + " " + propertyItem.getDetailAddress();
+        String fullAddress = propertyItem.getCity() + " " + propertyItem.getDistrict() + " " +
+                propertyItem.getLegalDong() + " " + propertyItem.getDetailAddress();
         address.setText(fullAddress);
+
+        copyAddressIcon.setOnClickListener(v -> {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("address", address.getText().toString());
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(this, "주소가 복사되었습니다.", Toast.LENGTH_SHORT).show();
+        });
 
         listingId.setText(propertyItem.getListingId());
         propertyType.setText(propertyItem.getPropertyType());
         depositMonthlyRent.setText(propertyItem.getDeposit() + " / " + propertyItem.getMonthlyRent());
         area.setText(propertyItem.getGrossArea() + " / " + propertyItem.getNetArea());
-        description.setText(propertyItem.getDescription());
+
+        // 매물특징 줄바꿈 변환
+        String formattedDescription = propertyItem.getDescription().replace("\\", "\n");
+        description.setText(formattedDescription);
+
+        // =================================================================
+        // ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼ 이 부분이 수정되었습니다 ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+        // =================================================================
+
+        // 더보기 / 접기 기능
+        description.post(() -> {
+            // XML에서 maxLines를 제거했기 때문에, 여기서 실제 전체 줄 수를 올바르게 가져올 수 있습니다.
+            if (description.getLineCount() > 3) {
+                // 실제 줄 수가 3줄이 넘으면 버튼을 보이게 하고,
+                // 이 시점에서 글자 수를 3줄로 제한합니다.
+                toggleDescription.setVisibility(View.VISIBLE);
+                description.setMaxLines(3); // ★★★ 핵심: 조건문 안으로 위치 이동
+                toggleDescription.setText("더보기");
+            } else {
+                // 3줄 이하면 버튼을 숨깁니다.
+                toggleDescription.setVisibility(View.GONE);
+            }
+        });
+
+        toggleDescription.setOnClickListener(new View.OnClickListener() {
+            private boolean expanded = false;
+
+            @Override
+            public void onClick(View v) {
+                if (expanded) {
+                    description.setMaxLines(3);
+                    toggleDescription.setText("더보기");
+                } else {
+                    description.setMaxLines(Integer.MAX_VALUE);
+                    toggleDescription.setText("접기");
+                }
+                expanded = !expanded;
+            }
+        });
+
+        // =================================================================
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲ 수정된 부분 끝 ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+        // =================================================================
+
+
         maintenanceFee.setText(propertyItem.getMaintenanceFee());
         availableMoveInDate.setText(propertyItem.getAvailableMoveInDate());
         direction.setText(propertyItem.getDirection());
-        approvalDate.setText(propertyItem.getApprovalDate());
+        approvalDate.setText(propertyItem.getApprovalAgeGroup());
         roomBathroom.setText(propertyItem.getNumRooms() + " / " + propertyItem.getNumBathrooms());
         floorInfo.setText(propertyItem.getFloor() + "/" + propertyItem.getTotalFloors() + "층");
         isDuplex.setText(propertyItem.getIsDuplex());
@@ -237,28 +276,23 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         parkingAvailable.setText(propertyItem.getParkingAvailable());
         totalParkingSpaces.setText(propertyItem.getTotalParkingSpaces());
         propertyFeatures.setText(propertyItem.getPropertyFeatures());
-        interiorFacilities.setText(propertyItem.getInteriorFacilities());
+
+        interiorFacilities.setText(propertyItem.getInteriorFacilities().replace("\\", ","));
+
         brokerageFee.setText(propertyItem.getBrokerageFee());
         loanAmount.setText(propertyItem.getLoanAmount());
-        brokerName.setText(propertyItem.getAgent());
-        //        brokerPhone.setText(propertyItem.getBrokerPhone());
 
+        brokerName.setText(propertyItem.getAgent().replace("\\", "\n"));
 
-        // -------------------
-        // 즐겨찾기 관련 처리 - Firestore로 교체
-        // -------------------
+        // 즐겨찾기 처리
         final String propertyTypeStr = propertyItem.getPropertyType();
         final String listingIdStr = propertyItem.getListingId();
-
-        // 초기 즐겨찾기 상태 확인
         checkFavoriteStatus(propertyTypeStr, listingIdStr);
 
-        // 클릭 리스너 - Firestore로 즐겨찾기 추가/삭제
         favoriteIcon.setOnClickListener(v -> {
             boolean isCurrentlyFavorite = (boolean) favoriteIcon.getTag();
 
             if (isCurrentlyFavorite) {
-                // 즐겨찾기 취소
                 firestoreManager.removeFavoriteFromFirestore(propertyTypeStr, listingIdStr, new FirestoreManager.FavoriteActionCallback() {
                     @Override
                     public void onSuccess() {
@@ -269,12 +303,10 @@ public class PropertyDetailsActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Exception e) {
-                        Log.e("FAVORITE_REMOVE_FAIL", "즐겨찾기 삭제 실패", e);
-                        Toast.makeText(PropertyDetailsActivity.this, "삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PropertyDetailsActivity.this, "삭제 실패", Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
-                // 즐겨찾기 추가
                 firestoreManager.addFavoriteToFirestore(propertyTypeStr, listingIdStr, new FirestoreManager.FavoriteActionCallback() {
                     @Override
                     public void onSuccess() {
@@ -285,21 +317,18 @@ public class PropertyDetailsActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Exception e) {
-                        Log.e("FAVORITE_ADD_FAIL", "즐겨찾기 추가 실패", e);
-                        Toast.makeText(PropertyDetailsActivity.this, "추가에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PropertyDetailsActivity.this, "추가 실패", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
     }
-
-    // 초기 즐겨찾기 상태를 확인하는 새로운 메서드 추가
     private void checkFavoriteStatus(String propertyTypeStr, String listingIdStr) {
         firestoreManager.isFavorite(propertyTypeStr, listingIdStr, new FirestoreManager.FavoriteStatusCallback() {
             @Override
             public void onResult(boolean isFav) {
                 updateFavoriteIcon(isFav);
-                favoriteIcon.setTag(isFav); // 상태를 태그로 저장
+                favoriteIcon.setTag(isFav);
             }
         });
     }
