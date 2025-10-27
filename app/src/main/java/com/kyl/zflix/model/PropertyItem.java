@@ -92,8 +92,8 @@ public class PropertyItem implements Serializable {
     @SerializedName("parking_available")
     private String parkingAvailable;
 
-    @SerializedName("approval_date")
-    private String approvalDate;
+    @SerializedName("approval_age_group")
+    private String approvalAgeGroup;
 
     // --- Getter & Setter ---
     public String getListingId() { return listingId; }
@@ -183,6 +183,7 @@ public class PropertyItem implements Serializable {
     public String getParkingAvailable() { return parkingAvailable; }
     public void setParkingAvailable(String parkingAvailable) { this.parkingAvailable = parkingAvailable; }
 
-    public String getApprovalDate() { return approvalDate; }
-    public void setApprovalDate(String approvalDate) { this.approvalDate = approvalDate; }
+    public String getApprovalAgeGroup() { return approvalAgeGroup; }
+    public void setApprovalAgeGroup(String approvalAgeGroup) { this.approvalAgeGroup = approvalAgeGroup; }
+
 }
