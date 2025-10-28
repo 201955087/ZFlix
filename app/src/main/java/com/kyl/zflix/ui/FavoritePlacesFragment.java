@@ -6,9 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,18 +20,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kyl.zflix.PropertyDetailsActivity;
 import com.kyl.zflix.R;
 import com.kyl.zflix.adapter.FavoriteAdapter;
-import com.kyl.zflix.model.PropertyItem; // PropertyItem import가 필요합니다.
+import com.kyl.zflix.model.PropertyItem;
 import com.kyl.zflix.model.PropertyListItem;
-import com.kyl.zflix.model.PropertyListResponse;
 import com.kyl.zflix.model.PropertyRequest;
 import com.kyl.zflix.model.PropertySingleResponse;
 import com.kyl.zflix.network.ApiClient;
 import com.kyl.zflix.network.ApiService;
 import com.kyl.zflix.network.Favorite;
 import com.kyl.zflix.network.FirestoreManager;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +45,7 @@ public class FavoritePlacesFragment extends Fragment {
     private ApiService apiService;
     private ProgressBar progressBar;
     private TextView emptyTextView;
+    private ImageButton btnRefresh; // ✅ 새로고침 버튼 추가
 
     @Nullable
     @Override
@@ -53,6 +57,7 @@ public class FavoritePlacesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.favorite_recycler_view);
         progressBar = view.findViewById(R.id.favorite_progress_bar);
         emptyTextView = view.findViewById(R.id.favorite_empty_text_view);
+        btnRefresh = view.findViewById(R.id.btn_refresh); // ✅ 새로고침 버튼 연결
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new FavoriteAdapter(new ArrayList<>());
@@ -70,6 +75,15 @@ public class FavoritePlacesFragment extends Fragment {
 
         firestoreManager = new FirestoreManager();
         apiService = ApiClient.getApiService();
+
+        // ✅ 새로고침 버튼 클릭 리스너
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "목록을 새로 불러옵니다...", Toast.LENGTH_SHORT).show();
+                fetchFavoriteProperties();
+            }
+        });
 
         return view;
     }
@@ -124,18 +138,13 @@ public class FavoritePlacesFragment extends Fragment {
                     public void onResponse(Call<PropertySingleResponse> call, Response<PropertySingleResponse> response) {
                         if (response.isSuccessful() && response.body() != null && response.body().getData() != null && !response.body().getData().isEmpty()) {
 
-                            // 1. PropertyItem 객체를 가져옵니다.
                             PropertyItem propertyItem = response.body().getData().get(0);
 
-                            // 2. PropertyItem을 PropertyListItem으로 변환합니다. (✨수정된 핵심 부분: Setter 사용✨)
                             PropertyListItem listItem = new PropertyListItem();
-
-                            // PropertyItem의 데이터를 PropertyListItem의 Setter를 이용해 복사합니다.
                             listItem.setListingId(propertyItem.getListingId());
                             listItem.setPropertyType(propertyItem.getPropertyType());
                             listItem.setDeposit(propertyItem.getDeposit());
                             listItem.setMonthlyRent(propertyItem.getMonthlyRent());
-                            // PropertyListItem에 정의된 모든 필드를 복사합니다.
                             listItem.setGrossArea(propertyItem.getGrossArea());
                             listItem.setNetArea(propertyItem.getNetArea());
                             listItem.setFloor(propertyItem.getFloor());
@@ -144,7 +153,6 @@ public class FavoritePlacesFragment extends Fragment {
                             listItem.setPropertyFeatures(propertyItem.getPropertyFeatures());
                             listItem.setImageUrl(propertyItem.getImageUrl());
 
-                            // 3. 변환된 PropertyListItem을 리스트에 저장합니다.
                             favoriteProperties.set(index, listItem);
                         } else {
                             Log.w("FavoritePlacesFragment", "API 응답 실패 또는 데이터 없음: " + favorite.getType() + " - " + favorite.getListing_id());
@@ -160,7 +168,6 @@ public class FavoritePlacesFragment extends Fragment {
                     @Override
                     public void onFailure(Call<PropertySingleResponse> call, Throwable t) {
                         Log.e("FavoritePlacesFragment", "API 호출 실패: " + favorite.getType() + " - " + favorite.getListing_id(), t);
-
                         completedCalls[0]++;
                         if (completedCalls[0] == favorites.size()) {
                             favoriteProperties.removeIf(item -> item == null);
