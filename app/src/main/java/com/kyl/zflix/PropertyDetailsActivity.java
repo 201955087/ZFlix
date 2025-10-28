@@ -50,7 +50,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
     // XML에 추가된 TextView 변수들 선언
     private TextView listingId, propertyType, depositMonthlyRent, area, maintenanceFee, availableMoveInDate,
             direction, approvalDate, roomBathroom, floorInfo, isDuplex, illegalBuilding, parkingAvailable,
-            totalParkingSpaces, propertyFeatures, interiorFacilities, brokerageFee, loanAmount, brokerName, brokerPhone;
+            totalParkingSpaces, propertyFeatures, interiorFacilities, brokerageFee, brokerName;
 
     private FirestoreManager firestoreManager; // 추가된 FirestoreManager 변수
 
@@ -116,9 +116,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         propertyFeatures = findViewById(R.id.propertyFeatures);
         interiorFacilities = findViewById(R.id.interiorFacilities);
         brokerageFee = findViewById(R.id.brokerageFee);
-        loanAmount = findViewById(R.id.loanAmount);
         brokerName = findViewById(R.id.brokerName);
-        brokerPhone = findViewById(R.id.brokerPhone);
     }
 
     private void bindDataFromListItem(PropertyListItem item) {
@@ -265,11 +263,11 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         // =================================================================
 
 
-        maintenanceFee.setText(propertyItem.getMaintenanceFee());
+        maintenanceFee.setText(propertyItem.getMaintenanceFee()+"만원");
         availableMoveInDate.setText(propertyItem.getAvailableMoveInDate());
         direction.setText(propertyItem.getDirection());
         approvalDate.setText(propertyItem.getApprovalAgeGroup());
-        roomBathroom.setText(propertyItem.getNumRooms() + " / " + propertyItem.getNumBathrooms());
+        roomBathroom.setText(propertyItem.getNumRooms() + " / " + propertyItem.getNumBathrooms()+ "개");
         floorInfo.setText(propertyItem.getFloor() + "/" + propertyItem.getTotalFloors() + "층");
         isDuplex.setText(propertyItem.getIsDuplex());
         illegalBuilding.setText(propertyItem.getIllegalBuilding());
@@ -280,7 +278,6 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         interiorFacilities.setText(propertyItem.getInteriorFacilities().replace("\\", ","));
 
         brokerageFee.setText(propertyItem.getBrokerageFee());
-        loanAmount.setText(propertyItem.getLoanAmount());
 
         brokerName.setText(propertyItem.getAgent().replace("\\", "\n"));
 

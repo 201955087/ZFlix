@@ -203,16 +203,8 @@
                     <TextView android:id="@+id/brokerageFee" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
                 </TableRow>
                 <TableRow>
-                    <TextView android:text="대출금액" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
-                    <TextView android:id="@+id/loanAmount" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
-                </TableRow>
-                <TableRow>
                     <TextView android:text="중개사" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
                     <TextView android:id="@+id/brokerName" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
-                </TableRow>
-                <TableRow>
-                    <TextView android:text="중개사 연락처" android:layout_width="wrap_content" android:layout_height="wrap_content" android:padding="8dp"/>
-                    <TextView android:id="@+id/brokerPhone" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:padding="8dp"/>
                 </TableRow>
             </TableLayout>
 
