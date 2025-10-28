@@ -217,7 +217,15 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         listingId.setText(propertyItem.getListingId());
         propertyType.setText(propertyItem.getPropertyType());
         depositMonthlyRent.setText(propertyItem.getDeposit() + " / " + propertyItem.getMonthlyRent());
-        area.setText(propertyItem.getGrossArea() + " / " + propertyItem.getNetArea());
+
+        if ("오피스텔".equals(propertyItem.getPropertyType())
+                || "오피스텔분양권".equals(propertyItem.getPropertyType())
+                || "상가주택".equals(propertyItem.getPropertyType())) {
+            area.setText(propertyItem.getContract_area() + " / " + propertyItem.getNetArea());
+        } else {
+            area.setText(propertyItem.getGrossArea() + " / " + propertyItem.getNetArea());
+        }
+
 
         // 매물특징 줄바꿈 변환
         String formattedDescription = propertyItem.getDescription().replace("\\", "\n");

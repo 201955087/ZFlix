@@ -37,6 +37,8 @@ public class PropertyItem implements Serializable {
 
     @SerializedName("gross_area")
     private String grossArea;
+    @SerializedName("contract_area")
+    private String contract_area;
 
     @SerializedName("net_area")
     private String netArea;
@@ -128,6 +130,9 @@ public class PropertyItem implements Serializable {
 
     public String getGrossArea() { return grossArea; }
     public void setGrossArea(String grossArea) { this.grossArea = grossArea; }
+
+    public String getContract_area() { return contract_area; }
+    public void setContract_area(String contract_area) { this.contract_area = contract_area; }
 
     public String getNetArea() { return netArea; }
     public void setNetArea(String netArea) { this.netArea = netArea; }
