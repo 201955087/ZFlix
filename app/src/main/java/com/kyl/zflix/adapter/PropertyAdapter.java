@@ -70,7 +70,7 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.Proper
         holder.title.setText(item.getPropertyType());
 
         String body1Text = item.getDeposit() + "/" + item.getMonthlyRent() + ", " +
-                item.getGrossArea() + ", " +
+                item.getNetArea() + ", " +
                 item.getFloor() + "/" + item.getTotalFloors() + "층, " +
                 item.getDirection();
         holder.body1.setText(body1Text);
