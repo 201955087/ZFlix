@@ -49,9 +49,20 @@
                         android:padding="4dp"/>
                 </LinearLayout>
 
-
                 <TextView
                     android:id="@+id/priceDifference"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/blue" />
+                <TextView
+                    android:id="@+id/deposit_diff_pct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textColor="@color/blue" />
+                <TextView
+                    android:id="@+id/rent_diff_pct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"

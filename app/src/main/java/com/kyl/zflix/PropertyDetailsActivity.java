@@ -21,6 +21,7 @@ import com.kyl.zflix.model.PropertySingleResponse;
 import com.kyl.zflix.network.ApiClient;
 import com.kyl.zflix.network.ApiService;
 import com.kyl.zflix.network.FirestoreManager;
+import android.graphics.Color;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
     // XML에 추가된 TextView 변수들 선언
     private TextView listingId, propertyType, depositMonthlyRent, area, maintenanceFee, availableMoveInDate,
             direction, approvalDate, roomBathroom, floorInfo, isDuplex, illegalBuilding, parkingAvailable,
-            totalParkingSpaces, propertyFeatures, interiorFacilities, brokerageFee, brokerName;
+            totalParkingSpaces, propertyFeatures, interiorFacilities, brokerageFee, brokerName,deposit_diff_pct,rent_diff_pct;
 
     private FirestoreManager firestoreManager; // 추가된 FirestoreManager 변수
 
@@ -90,6 +91,8 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         roomImageViewPager = findViewById(R.id.roomImageViewPager);
         title = findViewById(R.id.title);
         priceDifference = findViewById(R.id.priceDifference);
+        deposit_diff_pct = findViewById(R.id.deposit_diff_pct);
+        rent_diff_pct= findViewById(R.id.rent_diff_pct);
         address = findViewById(R.id.address);
         description = findViewById(R.id.description);
         toggleDescription = findViewById(R.id.toggleDescription); // 추가
@@ -123,6 +126,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         depositMonthlyRent.setText(item.getDeposit() + " / " + item.getMonthlyRent());
         title.setText(item.getPropertyType());
     }
+
 
     private void fetchPropertyDetails(String listingId, String type) {
         ApiService apiService = ApiClient.getApiService();
@@ -203,6 +207,47 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         // 주소
         title.setText(propertyItem.getPropertyType());
         priceDifference.setText("보증금 " + propertyItem.getDeposit() + " / 월세 " + propertyItem.getMonthlyRent());
+
+
+//        priceDifference.setText("유사 매물 대비 보증금이"+  propertyItem.getDeposit_diff_pct() +"(낮습니다 or 높습니다) ");
+        String Deposit_diffStr = propertyItem.getDeposit_diff_pct(); // 예: "-52.34" 또는 "34.12"
+        String statusText;
+        int Deposit_diff_color;
+
+// 문자열이 "-"로 시작하면 음수
+        if (Deposit_diffStr.startsWith("-")) {
+            statusText = "낮습니다";
+            Deposit_diff_color = Color.BLUE;
+        } else {
+            statusText = "높습니다";
+            Deposit_diff_color = Color.RED;
+        }
+
+// 텍스트 설정
+        deposit_diff_pct.setText("유사 매물 대비 보증금이 " + Deposit_diffStr + "% " + statusText);
+        deposit_diff_pct.setTextColor(Deposit_diff_color);
+//        rent_diff_pct
+        String rent_diffStr = propertyItem.getRent_diff_pct(); // 예: "-52.34" 또는 "34.12"
+        String rent_diffText;
+        int rent_diff_color;
+
+// 문자열이 "-"로 시작하면 음수
+        if (rent_diffStr.startsWith("-")) {
+            rent_diffText = "낮습니다";
+            rent_diff_color = Color.BLUE;
+        } else {
+            rent_diffText = "높습니다";
+            rent_diff_color = Color.RED;
+        }
+
+// 텍스트 설정
+        rent_diff_pct.setText("유사 매물 대비 월세가 " + rent_diffStr + "% " + rent_diffText);
+        rent_diff_pct.setTextColor(rent_diff_color);
+
+//        rent_diff_pct.setText("유사 매물 대비 월세가"+  propertyItem.getRent_diff_pct() +"(낮습니다 or 높습니다) ");
+
+
+
         String fullAddress = propertyItem.getCity() + " " + propertyItem.getDistrict() + " " +
                 propertyItem.getLegalDong() + " " + propertyItem.getDetailAddress();
         address.setText(fullAddress);

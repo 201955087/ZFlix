@@ -97,6 +97,12 @@ public class PropertyItem implements Serializable {
     @SerializedName("approval_age_group")
     private String approvalAgeGroup;
 
+    @SerializedName("deposit_diff_pct")
+    private String deposit_diff_pct;
+
+    @SerializedName("rent_diff_pct")
+    private String rent_diff_pct;
+
     // --- Getter & Setter ---
     public String getListingId() { return listingId; }
     public void setListingId(String listingId) { this.listingId = listingId; }
@@ -190,5 +196,11 @@ public class PropertyItem implements Serializable {
 
     public String getApprovalAgeGroup() { return approvalAgeGroup; }
     public void setApprovalAgeGroup(String approvalAgeGroup) { this.approvalAgeGroup = approvalAgeGroup; }
+
+    public String getDeposit_diff_pct() { return deposit_diff_pct; }
+    public void setDeposit_diff_pct(String deposit_diff_pct) { this.deposit_diff_pct = deposit_diff_pct; }
+
+    public String getRent_diff_pct() { return rent_diff_pct; }
+    public void setRent_diff_pct(String rent_diff_pct) { this.rent_diff_pct = rent_diff_pct; }
 
 }
