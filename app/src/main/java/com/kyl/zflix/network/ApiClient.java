@@ -1,7 +1,7 @@
 package com.kyl.zflix.network;
 
+import com.kyl.zflix.BuildConfig;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -9,7 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     private static Retrofit retrofit = null;
-    private static final String BASE_URL = "http://withcorn.store:2909/";
+    private static final String BASE_URL = BuildConfig.withcorn_Zflix_url;
+
     public static Retrofit getClient() {
         if (retrofit == null) {
             // 1. HttpLoggingInterceptor 객체를 생성하고 로그 레벨을 BODY로 설정합니다.

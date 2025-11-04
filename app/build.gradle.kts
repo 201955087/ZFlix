@@ -1,3 +1,12 @@
+import java.util.Properties
+
+// `local.properties` 파일에서 값을 읽어옵니다
+val localProperties = Properties().apply {
+    load(rootProject.file("local.properties").inputStream())
+}
+val apiBaseUrl = localProperties.getProperty("withcorn_Zflix_url")
+
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -23,7 +32,7 @@ android {
         } else {
             "https://default.com/"
         }
-        buildConfigField("String", "API_BASE_URL", "\"$apiBaseUrl\"")
+        buildConfigField("String", "withcorn_Zflix_url", "\"${apiBaseUrl}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
