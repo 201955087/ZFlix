@@ -38,15 +38,15 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/search_bar"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:hint="검색"
-            android:padding="8dp"
-            android:background="@android:drawable/editbox_background"
-            android:layout_toStartOf="@+id/filter_icon"
-            android:layout_centerVertical="true"/>
+<!--        <EditText-->
+<!--            android:id="@+id/search_bar"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:hint="검색"-->
+<!--            android:padding="8dp"-->
+<!--            android:background="@android:drawable/editbox_background"-->
+<!--            android:layout_toStartOf="@+id/filter_icon"-->
+<!--            android:layout_centerVertical="true"/>-->
 
         <ImageView
             android:id="@+id/filter_icon"
