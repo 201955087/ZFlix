@@ -1,6 +1,8 @@
 package com.kyl.zflix.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kyl.zflix.model.PropertyListItem;
+import com.kyl.zflix.R;
 import java.util.ArrayList;
 import java.util.List;
-import com.kyl.zflix.R;
-import java.util.Arrays;
 
 public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.PropertyViewHolder> {
 
+    private static final String TAG = "PropertyAdapter";
     private final Context context;
     private final List<PropertyListItem> items;
     private final OnItemClickListener listener;
@@ -48,35 +50,62 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.Proper
     public void onBindViewHolder(@NonNull PropertyViewHolder holder, int position) {
         PropertyListItem item = items.get(position);
 
+        // 이미지 처리
         String imageUrls = item.getImageUrl();
         if (imageUrls != null && !imageUrls.isEmpty()) {
             String[] urlArray = imageUrls.split(",");
             if (urlArray.length > 1) {
                 Glide.with(context)
-                        // ⭐ .asGif() 메소드를 삭제합니다.
-                        .load(urlArray[1].trim()) // 첫 번째 URL을 로드
-                        .placeholder(R.drawable.icons_loading) // 이 GIF는 로딩 중에만 표시됩니다.
+                        .load(urlArray[1].trim())
+                        .placeholder(R.drawable.icons_loading)
                         .error(R.drawable.baseline_home_24)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .centerCrop()
                         .into(holder.profileImage);
             } else {
-                holder.profileImage.setImageResource(R.drawable.baseline_home_24);
+                Glide.with(context)
+                        .load(urlArray[0].trim())
+                        .placeholder(R.drawable.icons_loading)
+                        .error(R.drawable.baseline_home_24)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .centerCrop()
+                        .into(holder.profileImage);
             }
         } else {
             holder.profileImage.setImageResource(R.drawable.baseline_home_24);
         }
 
+        // 타이틀/본문 설정
         holder.title.setText(item.getPropertyType());
 
         String body1Text = item.getDeposit() + "/" + item.getMonthlyRent() + ", " +
-                item.getNetArea() + ", " +
+                item.getGrossArea() + ", " +
                 item.getFloor() + "/" + item.getTotalFloors() + "층, " +
                 item.getDirection();
         holder.body1.setText(body1Text);
 
-        holder.body2.setText(item.getPropertyFeatures());
+        // PropertyListItem의 summary를 body2에 표시
+        String aiSummary = item.getSummary();
+        if (aiSummary != null && !aiSummary.isEmpty() && !aiSummary.equals("AI 정보 로딩 실패") && !aiSummary.equals("AI가 응답하지 못했습니다.")) {
+            // 요약 결과가 있으면 표시
+            holder.body2.setText(aiSummary);
+        } else if (aiSummary != null) {
+            // 실패 또는 응답 없음 메시지가 있으면 그대로 표시
+            holder.body2.setText(aiSummary);
+        } else {
+            // 요약 요청 전이거나 summary가 null이면 로딩 텍스트 표시
+            holder.body2.setText("주변 정보 로딩 중...");
+        }
 
+        String city = safeString(item.getCity());
+        String district = safeString(item.getDistrict());
+        String legalDong = safeString(item.getLegal_dong());
+        String detailAddress = safeString(item.getDetail_address());
+
+        String fullAddress = String.join(" ", city, district, legalDong, detailAddress).trim();
+        holder.itemView.setTag(R.id.property_item_address_tag, fullAddress);
+
+        // 클릭 처리
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemClick(item.getListingId(), propertyType);
@@ -95,6 +124,33 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.Proper
             items.addAll(newList);
         }
         notifyDataSetChanged();
+    }
+
+    /**
+     * Activity에서 AI 요약을 받아서 해당 listingId의 아이템을 업데이트하고 RecyclerView를 갱신합니다.
+     */
+    public void setSummaryForListing(String listingId, String summaryText) {
+        if (listingId == null) return;
+        for (int i = 0; i < items.size(); i++) {
+            PropertyListItem it = items.get(i);
+            if (listingId.equals(it.getListingId())) {
+
+                // ⭐ 수정된 부분: i의 값을 final 변수에 복사
+                final int finalI = i;
+
+                // PropertyListItem의 summary 필드를 업데이트
+                it.setSummary(summaryText);
+
+                // UI 스레드에서 특정 아이템만 갱신. finalI를 사용합니다.
+                ((Activity)context).runOnUiThread(() -> notifyItemChanged(finalI));
+
+                break;
+            }
+        }
+    }
+
+    private String safeString(String s) {
+        return s == null ? "" : s;
     }
 
     public static class PropertyViewHolder extends RecyclerView.ViewHolder {

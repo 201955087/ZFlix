@@ -1,0 +1,4 @@
+<!-- res/values/ids.xml -->
+<resources>
+    <item name="property_item_address_tag" type="id" />
+</resources>
