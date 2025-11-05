@@ -1,9 +1,6 @@
 package com.kyl.zflix;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,18 +9,19 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
 import com.kyl.zflix.adapter.ImagePagerAdapter;
+import com.kyl.zflix.model.ListingRequest;
 import com.kyl.zflix.model.PropertyItem;
 import com.kyl.zflix.model.PropertyListItem;
 import com.kyl.zflix.model.PropertyRequest;
 import com.kyl.zflix.model.PropertySingleResponse;
+import com.kyl.zflix.model.Transaction;
+import com.kyl.zflix.model.TransactionsResponse;
 import com.kyl.zflix.network.ApiClient;
 import com.kyl.zflix.network.ApiService;
 import com.kyl.zflix.network.FirestoreManager;
 import android.graphics.Color;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +33,16 @@ import retrofit2.Response;
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.content.Context;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+
+
 
 public class PropertyDetailsActivity extends AppCompatActivity {
 
@@ -55,6 +63,8 @@ public class PropertyDetailsActivity extends AppCompatActivity {
 
     private FirestoreManager firestoreManager; // 추가된 FirestoreManager 변수
 
+    private LineChart depositChart, rentChart; // [ADD] 거래 이력 차트 뷰
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +83,9 @@ public class PropertyDetailsActivity extends AppCompatActivity {
             bindDataFromListItem(itemFromIntent);
             // 필요에 따라 상세 API 호출
             fetchPropertyDetails(itemFromIntent.getListingId(), itemFromIntent.getPropertyType());
+
+            // [ADD] 상세 페이지 진입 시 거래 이력 차트도 불러오기 (POST)
+            fetchTransactions(itemFromIntent.getListingId());
         } else {
             // 기존 API 호출 로직
             String listingIdFromIntent = getIntent().getStringExtra("listingId");
@@ -80,6 +93,9 @@ public class PropertyDetailsActivity extends AppCompatActivity {
 
             if (listingIdFromIntent != null && propertyTypeFromIntent != null) {
                 fetchPropertyDetails(listingIdFromIntent, propertyTypeFromIntent);
+
+                // [ADD]
+                fetchTransactions(listingIdFromIntent);
             } else {
                 Toast.makeText(this, "매물 정보가 올바르지 않습니다.", Toast.LENGTH_LONG).show();
                 finish();
@@ -120,6 +136,9 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         interiorFacilities = findViewById(R.id.interiorFacilities);
         brokerageFee = findViewById(R.id.brokerageFee);
         brokerName = findViewById(R.id.brokerName);
+
+        depositChart = findViewById(R.id.depositChart);
+        rentChart = findViewById(R.id.rentChart);
     }
 
     private void bindDataFromListItem(PropertyListItem item) {
@@ -390,4 +409,110 @@ public class PropertyDetailsActivity extends AppCompatActivity {
             favoriteIcon.setImageResource(R.drawable.ic_star);
         }
     }
+
+    // [ADD] 거래 이력 POST 호출
+    private void fetchTransactions(String listingId) {
+        ApiService api = ApiClient.getApiService();
+
+        // POST 바디
+        ListingRequest body = new ListingRequest(listingId);
+
+        api.getTransactions(body).enqueue(new Callback<TransactionsResponse>() {
+            @Override
+            public void onResponse(Call<TransactionsResponse> call, Response<TransactionsResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Transaction> items = response.body().data;
+                    renderTransactionsChart(items);
+                } else {
+                    Toast.makeText(PropertyDetailsActivity.this, "거래 이력 응답 오류", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TransactionsResponse> call, Throwable t) {
+                Toast.makeText(PropertyDetailsActivity.this, "거래 이력 네트워크 오류", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // [ADD] 차트 기본 옵션
+    private void setupLineChart(LineChart chart) {
+        if (chart == null) return;
+        chart.getDescription().setEnabled(false);
+        chart.setTouchEnabled(true);
+        chart.setPinchZoom(true);
+
+        XAxis x = chart.getXAxis();
+        x.setPosition(XAxis.XAxisPosition.BOTTOM);
+        x.setGranularity(1f);
+        x.setDrawGridLines(false);
+
+        chart.getAxisRight().setEnabled(false);
+        Legend legend = chart.getLegend();
+        legend.setEnabled(true);
+    }
+
+
+
+    // [ADD] 데이터 렌더링
+    private void renderTransactionsChart(List<Transaction> items) {
+        if (items == null || items.isEmpty()) {
+            if (depositChart != null) { depositChart.setData(null); depositChart.invalidate(); }
+            if (rentChart != null)    { rentChart.setData(null);    rentChart.invalidate(); }
+            return;
+        }
+
+        // 연도 오름차순 보장
+        items.sort((a, b) -> Integer.compare(a.contract_date, b.contract_date));
+
+        final ArrayList<Integer> years = new ArrayList<>();
+        List<Entry> depositEntries = new ArrayList<>();
+        List<Entry> rentEntries    = new ArrayList<>();
+
+        for (int i = 0; i < items.size(); i++) {
+            Transaction t = items.get(i);
+            years.add(t.contract_date);
+            depositEntries.add(new Entry(i, (float) t.deposit_amount)); // 만원
+            rentEntries.add(new Entry(i, (float) t.monthly_rent));      // 만원
+        }
+
+        // 공통 차트 옵션
+        setupLineChart(depositChart);
+        setupLineChart(rentChart);
+
+        // 1) 보증금 차트
+        LineDataSet depositSet = new LineDataSet(depositEntries, "보증금(만원)");
+        depositSet.setLineWidth(2f);
+        depositSet.setDrawCircles(true);
+        depositSet.setDrawValues(false);
+        // 색상(원하면 변경)
+         depositSet.setColor(Color.parseColor("#1976D2"));
+         depositSet.setCircleColor(Color.parseColor("#1976D2"));
+
+        depositChart.setData(new LineData(depositSet));
+        depositChart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override public String getFormattedValue(float value) {
+                int i = (int) value; return (i >= 0 && i < years.size()) ? String.valueOf(years.get(i)) : "";
+            }
+        });
+        depositChart.invalidate();
+
+        // 2) 월세 차트
+        LineDataSet rentSet = new LineDataSet(rentEntries, "월세(만원)");
+        rentSet.setLineWidth(2f);
+        rentSet.setDrawCircles(true);
+        rentSet.setDrawValues(false);
+        // 색상(원하면 변경)
+         rentSet.setColor(Color.parseColor("#D32F2F"));
+         rentSet.setCircleColor(Color.parseColor("#D32F2F"));
+
+        rentChart.setData(new LineData(rentSet));
+        rentChart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override public String getFormattedValue(float value) {
+                int i = (int) value; return (i >= 0 && i < years.size()) ? String.valueOf(years.get(i)) : "";
+            }
+        });
+        rentChart.invalidate();
+    }
+
 }

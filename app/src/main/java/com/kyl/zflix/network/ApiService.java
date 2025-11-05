@@ -1,8 +1,10 @@
 package com.kyl.zflix.network;
 
+import com.kyl.zflix.model.ListingRequest;
 import com.kyl.zflix.model.PropertyListResponse;
 import com.kyl.zflix.model.PropertySingleResponse;
 import com.kyl.zflix.model.PropertyRequest;
+import com.kyl.zflix.model.TransactionsResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -51,5 +53,8 @@ public interface ApiService {
 
     @POST("/detached_multiPropertyApi/propertyDataList")
     Call<PropertyListResponse> getDetachedMultiProperties(@Body PropertyRequest request);
+
+    @POST("/propertyTransactionsApi/transactionsByListing")
+    Call<TransactionsResponse> getTransactions(@Body ListingRequest request);
 
 }
