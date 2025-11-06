@@ -35,7 +35,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
         holder.title.setText(item.getTitle());
         holder.detail.setText(item.getDetail());
-        holder.status.setText(item.getStatus());
+//        holder.status.setText(item.getStatus());
 
         // 오직 URL만 사용해서 이미지 로드
         Glide.with(holder.itemView.getContext())
@@ -50,14 +50,14 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.RoomViewHolder
 
     static class RoomViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView title, detail, status;
+        TextView title, detail;
 
         RoomViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.room_image);
             title = itemView.findViewById(R.id.room_price);
             detail = itemView.findViewById(R.id.room_description);
-            status = itemView.findViewById(R.id.room_status);
+            //status = itemView.findViewById(R.id.room_status);
         }
     }
 }

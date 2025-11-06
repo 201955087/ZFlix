@@ -246,18 +246,18 @@
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:padding="12dp">
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#FFFFFF"-->
+<!--        android:padding="12dp">-->
 
-        <Button
-            android:id="@+id/contactButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="중개사에게 문의하기"
-            android:backgroundTint="#FF5722"
-            android:textColor="#FFFFFF"/>
-    </RelativeLayout>
+<!--        <Button-->
+<!--            android:id="@+id/contactButton"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="중개사에게 문의하기"-->
+<!--            android:backgroundTint="#FF5722"-->
+<!--            android:textColor="#FFFFFF"/>-->
+<!--    </RelativeLayout>-->
 </LinearLayout>
