@@ -222,6 +222,41 @@
             <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" android:layout_marginTop="16dp" android:layout_marginBottom="16dp"/>
 
             <TextView
+                android:id="@+id/depositChartTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="보증금 거래내역"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/depositChart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"/>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" android:layout_marginTop="16dp" android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/rentChartTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="월세 거래내역"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/rentChart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"/>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#DDDDDD" android:layout_marginTop="16dp" android:layout_marginBottom="16dp"/>
+            <TextView
                 android:id="@+id/mapTitleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
