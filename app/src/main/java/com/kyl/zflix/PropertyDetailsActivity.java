@@ -48,7 +48,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
 
     private ViewPager2 roomImageViewPager;
     private TextView title, priceDifference, address, description, toggleDescription; // toggleDescription 추가
-    private Button contactButton;
+//    private Button contactButton;
     private ImageView mapImageView;
     private TextView mapTitleTextView;
 
@@ -112,7 +112,7 @@ public class PropertyDetailsActivity extends AppCompatActivity {
         address = findViewById(R.id.address);
         description = findViewById(R.id.description);
         toggleDescription = findViewById(R.id.toggleDescription); // 추가
-        contactButton = findViewById(R.id.contactButton);
+//        contactButton = findViewById(R.id.contactButton);
         mapImageView = findViewById(R.id.mapImageView);
         mapTitleTextView = findViewById(R.id.mapTitleTextView);
 
