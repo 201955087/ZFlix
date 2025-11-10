@@ -2,6 +2,7 @@ package com.kyl.zflix.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable; // 💡 추가됨
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat; // 💡 추가됨
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -86,15 +88,21 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.Proper
 
         // PropertyListItem의 summary를 body2에 표시
         String aiSummary = item.getSummary();
+
         if (aiSummary != null && !aiSummary.isEmpty() && !aiSummary.equals("AI 정보 로딩 실패") && !aiSummary.equals("AI가 응답하지 못했습니다.")) {
-            // 요약 결과가 있으면 표시
+            // 요약 결과가 있으면 표시하고 아이콘을 보여줍니다. (크기 조절)
             holder.body2.setText(aiSummary);
+            setBody2Icon(holder.body2, R.drawable.ic_gemini);
+
         } else if (aiSummary != null) {
-            // 실패 또는 응답 없음 메시지가 있으면 그대로 표시
+            // 실패 또는 응답 없음 메시지가 있으면 그대로 표시하고 아이콘을 숨깁니다.
             holder.body2.setText(aiSummary);
+            setBody2Icon(holder.body2, 0);
+
         } else {
-            // 요약 요청 전이거나 summary가 null이면 로딩 텍스트 표시
+            // 요약 요청 전이거나 summary가 null이면 로딩 텍스트 표시하고 아이콘을 숨깁니다.
             holder.body2.setText("주변 정보 로딩 중...");
+            setBody2Icon(holder.body2, 0);
         }
 
         String city = safeString(item.getCity());
@@ -152,6 +160,61 @@ public class PropertyAdapter extends RecyclerView.Adapter<PropertyAdapter.Proper
     private String safeString(String s) {
         return s == null ? "" : s;
     }
+
+    // =======================================================
+    // 💡 이미지 크기 조절 및 설정 관련 유틸리티 함수 추가
+    // =======================================================
+
+    /**
+     * 아이콘을 텍스트 뷰의 텍스트 크기에 맞게 조절하여 반환합니다.
+     * @param textView 대상 TextView
+     * @param drawableId 사용할 Drawable 리소스 ID
+     * @return 크기가 조절된 Drawable
+     */
+    private Drawable resizeDrawable(TextView textView, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (drawable == null) {
+            return null;
+        }
+
+        // 텍스트 폰트 크기(픽셀)를 이미지의 높이 기준으로 사용합니다.
+        int textHeight = (int) textView.getTextSize();
+
+        // 이미지의 원본 가로세로 비율을 유지합니다.
+        float ratio = (float) drawable.getIntrinsicWidth() / drawable.getIntrinsicHeight();
+        int newWidth = Math.round(textHeight * ratio);
+
+        // 크기 설정 (setBounds)
+        drawable.setBounds(0, 0, newWidth, textHeight);
+        return drawable;
+    }
+
+    /**
+     * TextView의 drawableStart에 크기가 조절된 이미지를 설정합니다.
+     * @param textView 대상 TextView
+     * @param drawableId 사용할 Drawable 리소스 ID (아이콘을 숨길 때는 0)
+     */
+    private void setBody2Icon(TextView textView, int drawableId) {
+        if (drawableId != 0) {
+            // 아이콘을 표시할 때: 크기를 조절하여 설정
+            Drawable icon = resizeDrawable(textView, drawableId);
+            // setCompoundDrawables를 사용하며, drawableStart에 icon을 설정합니다.
+            // setCompoundDrawables(left, top, right, bottom)
+            textView.setCompoundDrawables(icon, null, null, null);
+
+            // drawablePadding도 여기서 설정 (4dp)
+            int paddingDp = 4;
+            int paddingPx = (int) (paddingDp * textView.getContext().getResources().getDisplayMetrics().density);
+            textView.setCompoundDrawablePadding(paddingPx);
+
+        } else {
+            // 아이콘을 숨길 때: null로 설정
+            textView.setCompoundDrawables(null, null, null, null);
+            textView.setCompoundDrawablePadding(0);
+        }
+    }
+
+    // =======================================================
 
     public static class PropertyViewHolder extends RecyclerView.ViewHolder {
         ImageView profileImage;
