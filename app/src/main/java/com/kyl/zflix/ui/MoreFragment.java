@@ -59,12 +59,10 @@ public class MoreFragment extends Fragment {
             }
         });
 
-        // 🔹 3분할 바로가기 메뉴
-        LinearLayout btnMyHome = view.findViewById(R.id.btnMyHome);
+        // 🔹 바로가기 메뉴 (2분할)
         LinearLayout btnNote = view.findViewById(R.id.btnNote);
         LinearLayout btnStory = view.findViewById(R.id.btnStory);
 
-        btnMyHome.setOnClickListener(v -> openFragment(new MyHomeFragment()));
         btnNote.setOnClickListener(v -> openFragment(new NoteFragment()));
         btnStory.setOnClickListener(v -> openFragment(new StoryFragment()));
 

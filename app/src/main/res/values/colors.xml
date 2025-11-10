@@ -15,6 +15,16 @@
     <color name="black_light">#424242</color>
     <color name="white_alpha_10">#1AFFFFFF</color>
 
+    <!-- Added for StoryFragment tab colors -->
+    <color name="primary">#2196F3</color>
+    <color name="text_secondary">#666666</color>
+
+    <!-- Tab background colors -->
+    <color name="tab_selected_bg">#FFFFFF</color>
+    <color name="tab_unselected_bg">#F8F8F8</color>
+    <color name="tab_selected_text">#2196F3</color>
+    <color name="tab_unselected_text">#666666</color>
+
     <color name="blue">#2196F3</color>
     <color name="red_500">#F44336</color>
 
